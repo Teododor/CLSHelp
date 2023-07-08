@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>T-Shirt Configurator</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      #canvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvas"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+    <script>
+      // Set up the WebGL renderer
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById("canvas").appendChild(renderer.domElement);
+
+      // Set up the scene and camera
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = 5;
+
+      // Create a T-Shirt geometry
+      const tShirtGeometry = new THREE.BoxGeometry(2, 3, 0.1);
+
+      // Create a material with initial color and texture
+      const initialColor = 0xffffff; // white
+      const initialTextureUrl = "path/to/initial_texture.jpg"; // replace with your texture image URL
+      const textureLoader = new THREE.TextureLoader();
+      const initialTexture = textureLoader.load(initialTextureUrl);
+      const material = new THREE.MeshPhongMaterial({
+        color: initialColor,
+        map: initialTexture,
+      });
+
+      // Create a T-Shirt mesh with the geometry and material
+      const tShirtMesh = new THREE.Mesh(tShirtGeometry, material);
+      scene.add(tShirtMesh);
+
+      // Add lighting to the scene
+      const ambientLight = new THREE.AmbientLight(0x404040);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff);
+      directionalLight.position.set(1, 1, 1).normalize();
+      scene.add(directionalLight);
+
+      // Animate the T-Shirt
+      function animate() {
+        requestAnimationFrame(animate);
+        tShirtMesh.rotation.x += 0.01;
+        tShirtMesh.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Function to handle color change
+      function changeColor(colorHex) {
+        material.color.set(colorHex);
+      }
+
+      // Function to handle texture change
+      function changeTexture(textureUrl) {
+        const newTexture = textureLoader.load(textureUrl);
+        material.map = newTexture;
+      }
+    </script>
+
+    <!-- Color and texture controls -->
+    <div>
+      <label for="color-picker">Color:</label>
+      <input
+        type="color"
+        id="color-picker"
+        onchange="changeColor(this.value)"
+      />
+
+      <label for="texture-picker">Texture:</label>
+      <select id="texture-picker" onchange="changeTexture(this.value)">
+        <option value="images/greenTShirt.png">Texture 1</option>
+        <option value="images/greenTShirt.png">Texture 2</option>
+        <!-- Add more texture options here -->
+      </select>
+    </div>
+  </body>
+</html>

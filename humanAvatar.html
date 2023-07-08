@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Human Avatar</title>
+    <style>
+      #container {
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="script-human.js"></script>
+    <script>
+      // JavaScript code for creating and animating the human avatar
+
+      // Set up the Three.js scene
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById('container').appendChild(renderer.domElement);
+
+      // Add lighting to the scene
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight.position.set(1, 1, 1);
+      scene.add(directionalLight);
+
+      // Create the humanoid mesh
+      const geometry = new THREE.Group();
+
+      // ... [Humanoid Mesh Code from Step 2]
+
+      // Add the humanoid mesh to the scene
+      scene.add(geometry);
+
+      // Set the camera position
+      camera.position.z = 0;
+
+      // Animate the avatar
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // ... [Animation Code from Step 3]
+
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>
